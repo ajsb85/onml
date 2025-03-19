@@ -6,6 +6,7 @@ export default [
   {
     ignores: [
       "build/**/*",
+      "build-cjs/**/*",
       "node_modules/**",
       "coverage/**/*"
     ]

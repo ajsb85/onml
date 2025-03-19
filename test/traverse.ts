@@ -1,4 +1,4 @@
-import { traverse, TraverseContext, TreeNode } from '../src/traverse.js'; // Import TraverseContext
+import { traverse, TraverseContext, TreeNode } from '../src/traverse.js';
 import * as chai from 'chai';
 
 describe('#traverse', () => {
