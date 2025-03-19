@@ -3,7 +3,7 @@
   "version": "3.0.0",
   "description": "ONML parser, stringifier, traverser",
   "type": "module",
-  "main": "build-cjs/index.js",
+  "main": "build/onml.js",
   "types": "build/index.d.ts",
   "files": [
     "build"
