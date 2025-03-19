@@ -3,21 +3,17 @@
   "version": "3.0.0",
   "description": "ONML parser, stringifier, traverser",
   "type": "module",
-  "main": "build-cjs/index.js",
+  "main": "build/onml.browser.js",
   "types": "build/index.d.ts",
   "files": [
     "build"
   ],
   "scripts": {
     "lint": "npx eslint . --ext .ts",
-    "test": "mocha",
-    "build": "tsc",
-    "build:cjs": "tsc -p tsconfig.cjs.json",
-    "build:dev": "npm run build && npm run esbuild",
-    "build:prod": "npm run build && npm run rollup",
-    "prepublish": "npm run build:prod && npm run test",
-    "rollup": "rollup -c",
-    "esbuild": "node esbuild.config.js"
+    "test": "mocha --require ts-node/register --project tsconfig.json 'test/**/*.ts'",
+    "build": "rollup -c",
+    "build:browser": "browserify --standalone onml -t [ babelify --presets [ @babel/preset-env @babel/preset-typescript ] ] build/index.js > build/onml.browser.js",
+    "prepublishOnly": "npm run build && npm run build:browser && npm run test"
   },
   "repository": {
     "type": "git",
@@ -44,6 +40,9 @@
   },
   "homepage": "https://github.com/drom/onml#readme",
   "devDependencies": {
+    "@babel/core": "^7.26.10",
+    "@babel/preset-env": "^7.26.9",
+    "@babel/preset-typescript": "^7.26.0",
     "@drom/eslint-config": "^0.12.0",
     "@rollup/plugin-commonjs": "^28.0.3",
     "@rollup/plugin-node-resolve": "^16.0.1",
@@ -54,6 +53,8 @@
     "@types/sax": "^1.2.7",
     "@typescript-eslint/eslint-plugin": "^8.26.1",
     "@typescript-eslint/parser": "^8.26.1",
+    "babelify": "^10.0.0",
+    "browserify": "^17.0.1",
     "chai": "^5.2.0",
     "esbuild": "^0.25.1",
     "esbuild-plugin-polyfill-node": "^0.3.0",
