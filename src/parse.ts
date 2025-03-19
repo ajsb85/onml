@@ -3,7 +3,8 @@
  * Parses an XML/HTML/SVG string into an ONML array.
  */
 import * as saxPkg from 'sax';
-const sax = saxPkg.default || saxPkg;
+
+const sax = saxPkg;
 
 /**
  * Options for the `parse` function.

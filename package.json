@@ -3,7 +3,7 @@
   "version": "3.0.0",
   "description": "ONML parser, stringifier, traverser",
   "type": "module",
-  "main": "build/index.js",
+  "main": "build-cjs/index.js",
   "types": "build/index.d.ts",
   "files": [
     "build"
@@ -12,9 +12,10 @@
     "lint": "npx eslint . --ext .ts",
     "test": "mocha",
     "build": "tsc",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
     "build:dev": "npm run build && npm run esbuild",
     "build:prod": "npm run build && npm run rollup",
-    "prepublish": "npm run build:prod && npm run test",
+    "prepublish": "npm run build:cjs && npm run test",
     "rollup": "rollup -c",
     "esbuild": "node esbuild.config.js"
   },
