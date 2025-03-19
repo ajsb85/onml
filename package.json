@@ -33,7 +33,10 @@
     "traverser",
     "render"
   ],
-  "author": "Yuriy Semenov",
+  "author": "Aliaksei Chapyzhenka",
+  "contributors": [
+    "Alexander Salas Bastidas <a.salas@ieee.org> (https://ajsb85.com)"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/drom/onml/issues"
