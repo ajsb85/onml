@@ -3,17 +3,21 @@
   "version": "3.0.0",
   "description": "ONML parser, stringifier, traverser",
   "type": "module",
-  "main": "build/onml.js",
+  "main": "build-cjs/index.js",
   "types": "build/index.d.ts",
   "files": [
     "build"
   ],
   "scripts": {
     "lint": "npx eslint . --ext .ts",
-    "test": "mocha --require ts-node/register --project tsconfig.json 'test/**/*.ts'",
-    "build": "rollup -c",
+    "test": "mocha",
+    "build": "tsc",
+    "build:dev": "npm run build && npm run esbuild",
+    "build:prod": "npm run build && npm run rollup",
     "build:browser": "browserify --standalone onml -t [ babelify --presets [ @babel/preset-env @babel/preset-typescript ] ] build/index.js > build/onml.browser.js",
-    "prepublishOnly": "npm run build && npm run build:browser && npm run test"
+    "prepublish": "npm run build:prod && npm run test",
+    "rollup": "rollup -c",
+    "esbuild": "node esbuild.config.js"
   },
   "repository": {
     "type": "git",
