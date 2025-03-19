@@ -1,8 +1,7 @@
 # ONML
 
 [![NPM version](https://img.shields.io/npm/v/onml.svg)](https://www.npmjs.org/package/onml)
-[![Tests](https://github.com/drom/onml/actions/workflows/nodejs.yml/badge.svg)](https://github.com/drom/onml/actions/workflows/nodejs.yml)
-[![codecov](https://codecov.io/gh/drom/onml/branch/main/graph/badge.svg?token=YOUR_CODECOV_TOKEN)](https://codecov.io/gh/drom/onml)
+[![Tests](https://github.com/ajsb85/onml/actions/workflows/nodejs.yml/badge.svg)](https://github.com/ajsb85/onml/actions/workflows/nodejs.yml)
 
 ONML is a lightweight JavaScript library for working with [JSONML](http://www.jsonml.org/) data, providing utilities for parsing XML/HTML/SVG strings into JSONML arrays, stringifying JSONML arrays back into XML/HTML/SVG strings, traversing the JSONML tree, and rendering JSONML to the DOM. It's written in TypeScript and provides full type safety.
 
