@@ -1,11 +1,9 @@
-'use strict';
-
-const traverse = require('../traverse.js');
-const chai = require('chai');
+import { traverse, TraverseContext, TreeNode } from '../src/traverse.js'; // Import TraverseContext
+import * as chai from 'chai';
 
 describe('#traverse', () => {
   const data = ['b',
-    ['div', {a: true},
+    ['div', { a: true },
       ['span',
         'div',
         ['div',
@@ -25,7 +23,7 @@ describe('#traverse', () => {
   it('count divs on enter', done => {
     let count = 0;
     traverse(data, {
-      enter: function(node) {
+      enter: (node: TreeNode) => {
         if (node.name === 'div') {
           count++;
         }
@@ -38,7 +36,7 @@ describe('#traverse', () => {
   it('count divs on leave', done => {
     let count = 0;
     traverse(data, {
-      leave: function(node) {
+      leave: (node: TreeNode) => {
         if (node.name === 'div') {
           count++;
         }
@@ -51,7 +49,7 @@ describe('#traverse', () => {
   it('count divs with attr.a', done => {
     let count = 0;
     traverse(data, {
-      enter: function(node) {
+      enter: (node: TreeNode) => {
         if (
           node.name === 'div' &&
           node.attr.a
@@ -67,7 +65,7 @@ describe('#traverse', () => {
   it('count divs in spans', done => {
     let count = 0;
     traverse(data, {
-      enter: function(node, parent) {
+      enter: (node: TreeNode, parent?: TreeNode) => {
         if (
           parent &&
           parent.name === 'span' &&
@@ -84,7 +82,7 @@ describe('#traverse', () => {
   it('count node.full.length === 1', done => {
     let count = 0;
     traverse(data, {
-      enter: function(node) {
+      enter: (node: TreeNode) => {
         if (node.full.length === 1) {
           count++;
         }
@@ -95,16 +93,16 @@ describe('#traverse', () => {
   });
 
   it('gen XML skeleton', done => {
-    var res = '';
+    let res = '';
     traverse(data, {
-      enter: function(node) {
+      enter: (node: TreeNode) => {
         res += '<' + node.name;
-        Object.keys(node.attr).forEach(function(key) {
+        Object.keys(node.attr).forEach(function (key) {
           res += ' ' + key + '="' + node.attr[key] + '"';
         });
         res += '>';
       },
-      leave: function(node) {
+      leave: (node: TreeNode) => {
         res += '</' + node.name + '>';
       }
     });
@@ -112,14 +110,13 @@ describe('#traverse', () => {
     done();
   });
 
-  it('count divs but skip spans', done => {
+    it('count divs but skip spans', done => {
     let count = 0;
     traverse(data, {
-      enter: function(node) {
+      enter: function(this: TraverseContext, node: TreeNode) { // Explicitly type 'this'
         if (node.name === 'div') {
           count++;
-        } else
-        if (node.name === 'span') {
+        } else if (node.name === 'span') {
           this.skip();
         }
       }
@@ -130,7 +127,7 @@ describe('#traverse', () => {
 
   it('replace divs with briks', done => {
     traverse(data, {
-      leave: function(node) {
+      leave: function(this: TraverseContext, node: TreeNode) { // Explicitly type 'this'
         if (node.name === 'div') {
           this.name('brick');
         }
@@ -138,7 +135,7 @@ describe('#traverse', () => {
     });
     chai.expect(data).to.deep.equal(
       ['b',
-        ['brick', {a: true},
+        ['brick', { a: true },
           ['span',
             'div',
             ['brick',
@@ -160,7 +157,7 @@ describe('#traverse', () => {
 
   it('replace span with wood', done => {
     traverse(data, {
-      leave: function(node) {
+      leave: function (this: TraverseContext, node: TreeNode) { // Explicitly type 'this'
         if (node.name === 'span') {
           this.replace(['wood']);
         }
@@ -168,7 +165,7 @@ describe('#traverse', () => {
     });
     chai.expect(data).to.deep.equal(
       ['b',
-        ['brick', {a: true},
+        ['brick', { a: true },
           ['wood']
         ]
       ]
@@ -178,8 +175,8 @@ describe('#traverse', () => {
 
   it('add wood', done => {
     traverse(data, {
-      leave: function(node) {
-        var i;
+      leave: (node: TreeNode) => {
+        let i;
         if (node.name === 'brick') {
           for (i = 0; i < 5; i++) {
             node.full.push(['wood']);
@@ -189,7 +186,7 @@ describe('#traverse', () => {
     });
     chai.expect(data).to.deep.equal(
       ['b',
-        ['brick', {a: true},
+        ['brick', { a: true },
           ['wood'],
           ['wood'],
           ['wood'],
@@ -204,7 +201,7 @@ describe('#traverse', () => {
 
   it('remove wood', done => {
     traverse(data, {
-      leave: function(node) {
+      leave: function (this: TraverseContext, node: TreeNode) { // Explicitly type 'this'
         if (node.name === 'wood') {
           this.remove();
         }
@@ -212,7 +209,7 @@ describe('#traverse', () => {
     });
     chai.expect(data).to.deep.equal(
       ['b',
-        ['brick', {a: true}]
+        ['brick', { a: true }]
       ]
     );
     done();

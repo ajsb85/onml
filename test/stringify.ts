@@ -1,11 +1,10 @@
-'use strict';
+import * as chai from 'chai';
 
-const chai = require('chai');
-const lib = require('../');
+import { stringify } from '../src/stringify.js';
 
-const dat = {
+const dat: Record<string, { src: any[], dst: string }> = { // added type annotation
   t0: {
-    src: ['text', {a: 55}, ['tspan', 'so me']],
+    src: ['text', { a: 55 }, ['tspan', 'so me']],
     dst: '<text a="55">\n  <tspan>so me</tspan>\n</text>\n'
   },
   t1: {
@@ -24,11 +23,11 @@ const dat = {
 };
 
 describe('stringify', () => {
-  Object.keys(dat).map(name => {
+  Object.keys(dat).forEach(name => { // Changed from map to forEach
     it(name, done => {
-      var src = dat[name].src;
-      var dst = dat[name].dst;
-      chai.expect(lib.stringify(src, 2)).to.be.equal(dst);
+      const src = dat[name].src;
+      const dst = dat[name].dst;
+      chai.expect(stringify(src, 2)).to.be.equal(dst);
       done();
     });
   });

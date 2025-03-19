@@ -1,29 +1,39 @@
 {
   "name": "onml",
-  "version": "2.1.0",
-  "description": "JSONML Library",
-  "main": "index.js",
-  "scripts": {
-    "test": "eslint *.js && nyc mocha",
-    "browserify": "browserify --standalone onml index.js > build/onml.js",
-    "prepublish": "npm run test && mkdir -p build && npm run browserify"
-  },
+  "version": "3.0.0",
+  "description": "ONML parser, stringifier, traverser",
+  "type": "module",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "files": [
-    "build/onml.js",
-    "*.js"
+    "build"
   ],
-  "unpkg": "build/onml.js",
+  "scripts": {
+    "lint": "npx eslint . --ext .ts",
+    "test": "mocha",
+    "build": "tsc",
+    "build:dev": "npm run build && npm run esbuild",
+    "build:prod": "npm run build && npm run rollup",
+    "prepublish": "npm run build:prod && npm run test",
+    "rollup": "rollup -c",
+    "esbuild": "node esbuild.config.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/drom/onml.git"
   },
   "keywords": [
-    "jsonml",
-    "xml",
-    "html",
-    "svg"
+    "ONML",
+    "XML",
+    "HTML",
+    "SVG",
+    "JSONML",
+    "parser",
+    "stringifier",
+    "traverser",
+    "render"
   ],
-  "author": "Aliaksei Chapyzhenka",
+  "author": "Yuriy Semenov",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/drom/onml/issues"
@@ -31,19 +41,47 @@
   "homepage": "https://github.com/drom/onml#readme",
   "devDependencies": {
     "@drom/eslint-config": "^0.12.0",
-    "browserify": "^17.0.1",
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@types/chai": "^5.2.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.13.10",
+    "@types/sax": "^1.2.7",
+    "@typescript-eslint/eslint-plugin": "^8.26.1",
+    "@typescript-eslint/parser": "^8.26.1",
     "chai": "^5.2.0",
+    "esbuild": "^0.25.1",
+    "esbuild-plugin-polyfill-node": "^0.3.0",
     "eslint": "^9.22.0",
     "mocha": "^11.1.0",
-    "nyc": "^17.1.0"
+    "rollup": "^4.36.0",
+    "rollup-plugin-polyfill-node": "^0.13.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
   },
   "dependencies": {
     "sax": "^1.4.1"
   },
+  "mocha": {
+    "require": [
+      "ts-node/register",
+      "./mocha-loader.mjs"
+    ],
+    "extension": [
+      "ts",
+      "js",
+      "mjs"
+    ],
+    "spec": [
+      "test/**/*.ts"
+    ]
+  },
   "eslintConfig": {
-    "extends": "@drom/eslint-config/eslint4/node8",
-    "rules": {
-      "no-console": 1
-    }
+    "extends": "@drom/eslint-config",
+    "parserOptions": {
+      "project": "./tsconfig.test.json"
+    },
+    "ignorePatterns": "build/*"
   }
 }
